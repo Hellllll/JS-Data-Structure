@@ -1,6 +1,8 @@
 /**
  * 存储需要快速查找的数据非常有用
- *创建 BinarySearchTree类（二叉搜索树的规律搞清楚）
+ * 创建 BinarySearchTree类（二叉搜索树的规律搞清楚）
+ * 这样就创建了一整颗树？厉害哦
+ * 任务拓展：学习AVL树，红黑树，堆积树
  */
 function BinarySearchTree() {
 
@@ -127,8 +129,45 @@ function BinarySearchTree() {
 
 	//很复杂的方法
 	this.remove = function (key) {
-
+		node = removeNode(root, key); 
 	};
+
+	function removeNode(node, key) {
+		if (node === null) {
+			return null;
+		}
+		if (key < node.key) {
+			node.left = removeNode(node.left, key);
+			return node;
+		} else if (key > node.key) {
+			node.right = removeNode(node.right, key);
+			return node;
+		} else {
+
+			//当key=node.key时要分三种情况
+			//1.要移除的节点为叶子节点
+			if (node.left === null && node.right === null) {
+				node = null;
+				return node;
+			}
+
+			//2.移除一个带一个子节点的节点
+			if (node.left === null) {
+				node = node.right;
+				return node;
+			} else if (node.right === null) {
+				node = node.left;
+				return node;
+			}
+
+			//3.移除一个带双子节点的节点
+			//findMinCode方法和minNode实现原理一样，只是最终返回的是节点
+			var aux = findMinCode(nodeRight);
+			node.key = aux.key;
+			node.right = removeNode(node.right, aux.key);
+			return node;
+		}
+	}
 }
 
 function print(value) {
@@ -139,5 +178,6 @@ tree.insert(11);
 tree.insert(123);
 tree.insert(13);
 tree.insert(21);
+tree.remove(13);
 tree.inOrderTraverse(print);
 
