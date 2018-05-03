@@ -11,7 +11,7 @@ function DoubleLinkedList() {
 		this.element = element;
 	};
 
-	var length,
+	var length = 0,
 		head = null,
 		tail = null;
 
